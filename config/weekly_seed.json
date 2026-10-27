@@ -1,0 +1,29 @@
+{
+  "weekly": [
+    {
+      "weekday": 0,
+      "image_path": "images/monday.jpg",
+      "start_time": "09:00",
+      "end_time": "14:59"
+    },
+    {
+      "weekday": 4,
+      "image_path": "images/friday.jpg",
+      "start_time": "09:00",
+      "end_time": "14:59"
+    }
+  ],
+  "historical_selected_times": [
+    {
+      "post_date": "2026-10-23",
+      "weekday": 4,
+      "chosen_clock": "11:12"
+    },
+    {
+      "post_date": "2026-10-26",
+      "weekday": 0,
+      "chosen_clock": "11:20"
+    }
+  ],
+  "note": "Historical picks are reference only; future posting times remain random within each weekday window."
+}

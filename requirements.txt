@@ -1,0 +1,5 @@
+# Direct runtime dependencies only (not a system-wide pip freeze)
+discord.py==2.6.4
+aiohttp==3.13.3
+python-dotenv==1.2.1
+pytz==2025.2

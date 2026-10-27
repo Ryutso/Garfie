@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Garfie Admin Dashboard</title>
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --background: #17191f;
+            --panel: #22252d;
+            --panel-light: #2b2f39;
+            --border: #3b404c;
+            --text: #eeeeee;
+            --muted: #a9afbd;
+            --accent: #7289da;
+            --accent-hover: #879ce8;
+            --danger: #d9534f;
+            --danger-hover: #e36b67;
+            --success: #43a878;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 28px;
+        }
+
+        header h1 {
+            margin: 0 0 6px;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 21px;
+        }
+
+        h3 {
+            margin-top: 0;
+            font-size: 17px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .status-item {
+            background: var(--panel-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            min-width: 0;
+        }
+
+        .status-label {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 17px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .timezone {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            display: block;
+            width: 100%;
+            padding: 11px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #17191f;
+            color: var(--text);
+            font: inherit;
+        }
+
+        input[type="file"] {
+            padding: 9px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 1px;
+        }
+
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        button,
+        .button-link {
+            display: inline-block;
+            border: 0;
+            border-radius: 6px;
+            padding: 11px 17px;
+            margin-top: 16px;
+            background: var(--accent);
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover,
+        .button-link:hover {
+            background: var(--accent-hover);
+        }
+
+        button.danger {
+            background: var(--danger);
+        }
+
+        button.danger:hover {
+            background: var(--danger-hover);
+        }
+
+        button.success {
+            background: var(--success);
+        }
+
+        .small-button {
+            padding: 7px 11px;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .form-grid > div {
+            min-width: 0;
+        }
+
+        .small {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .image-choice {
+            margin-top: 16px;
+            padding: 14px;
+            background: var(--panel-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .image-choice label:first-child {
+            margin-top: 0;
+        }
+
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            vertical-align: middle;
+            padding: 11px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--muted);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        td {
+            overflow-wrap: anywhere;
+        }
+
+        td form {
+            margin: 0;
+        }
+
+        .empty {
+            color: var(--muted);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            margin-top: -8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .top-actions form {
+            margin: 0;
+        }
+
+        .top-actions button,
+        .top-actions a {
+            margin-top: 0;
+        }
+
+        footer {
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+            padding: 12px 0 25px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 14px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .status-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 25px;
+            }
+
+            table {
+                min-width: 650px;
+            }
+        }
+
+        /* Firefox-friendly weekly configuration layout */
+        .weekly-table { table-layout: fixed; min-width: 920px; }
+        .weekly-table th:nth-child(1) { width: 11%; }
+        .weekly-table th:nth-child(2) { width: 20%; }
+        .weekly-table th:nth-child(3) { width: 26%; }
+        .weekly-table th:nth-child(4) { width: 34%; }
+        .weekly-table th:nth-child(5) { width: 9%; }
+        .weekly-table td { vertical-align: middle; overflow-wrap: anywhere; }
+        .weekly-time-form { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .weekly-time-pair { display: flex; align-items: end; gap: 8px; width: 100%; }
+        .weekly-time-pair label { flex: 1 1 0; min-width: 0; margin: 0; font-size: 12px; color: var(--muted); }
+        .weekly-time-pair input[type="time"] { width: 100%; min-width: 0; max-width: 100%; padding: 7px 4px; margin-top: 4px; font-size: 12px; font-variant-numeric: tabular-nums; }
+        .weekly-time-form button, .weekly-action-cell button { margin: 0; }
+
+        .weekly-picked {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+        .weekly-picked-label, .weekly-picked-date { color: var(--muted); }
+        .weekly-picked strong { font-size: 15px; white-space: nowrap; }
+        .weekly-reroll-form { margin-top: 7px !important; }
+        .weekly-reroll-form button { margin: 0; white-space: normal; }
+
+        .weekly-message-form { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .weekly-message-form textarea { width: 100%; min-height: 88px; resize: vertical; font-size: 13px; }
+        .weekly-message-form button { margin: 0; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <header>
+        <h1>Garfie Admin Dashboard</h1>
+        <p>Manage scheduled images, recurring posts, and bot settings.</p>
+    </header>
+
+
+    <!-- BOT STATUS -->
+
+    <section class="panel">
+        <h2>Bot Status</h2>
+
+        <div class="status-grid">
+
+            <div class="status-item">
+                <div class="status-label">Last Posted</div>
+                <div class="status-value">${last_posted}</div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-label">Scheduled Time</div>
+                <div class="status-value">${scheduled_clock}</div>
+            </div>
+
+        </div>
+
+        <div class="timezone">
+            Time zone: ${timezone}
+        </div>
+
+        <div class="top-actions">
+
+            <form method="post" action="${post_now_url}">
+                <button class="success" type="submit">
+                    Post Today's Image Now
+                </button>
+            </form>
+
+            <a class="button-link" href="${logs_url}">
+                View Bot Logs
+            </a>
+
+        </div>
+    </section>
+
+
+    <!-- POSTING TIME -->
+
+    <section class="panel">
+        <h2>Posting Time</h2>
+
+        <p class="section-description">
+            Set a specific posting time, or leave the field empty
+            to let Garfie choose automatically.
+        </p>
+
+        <form method="post" action="${settime_url}">
+
+            <label for="scheduled_clock">
+                Scheduled Time
+            </label>
+
+            <input
+                type="time"
+                id="scheduled_clock"
+                name="scheduled_clock"
+                value="${scheduled_time_value}"
+            >
+
+            <p class="small">
+                Clear the time field to return to automatic scheduling.
+            </p>
+
+            <button type="submit">
+                Save Posting Time
+            </button>
+        </form>
+    </section>
+
+
+    <!-- WEEKLY CONFIGURATION -->
+
+    <section class="panel">
+        <h2>Weekly Image Configuration</h2>
+
+        <p class="section-description">
+            Choose an image, optional message, and posting-time range for each day of the week.
+        </p>
+
+        <form
+            method="post"
+            action="${weekly_save_url}"
+            enctype="multipart/form-data"
+        >
+
+            <label for="weekly-day">
+                Day of the Week
+            </label>
+
+            <select id="weekly-day" name="weekday" required>
+                <option value="">Choose a day...</option>
+                <option value="0">Monday</option>
+                <option value="1">Tuesday</option>
+                <option value="2">Wednesday</option>
+                <option value="3">Thursday</option>
+                <option value="4">Friday</option>
+                <option value="5">Saturday</option>
+                <option value="6">Sunday</option>
+            </select>
+
+            <div class="image-choice">
+
+                <label for="weekly-existing">
+                    Choose an Existing Image
+                </label>
+
+                <select
+                    id="weekly-existing"
+                    name="existing_image"
+                >
+                    ${image_options}
+                </select>
+
+                <p class="small">
+                    Images are listed from the images folder and all
+                    of its subfolders.
+                </p>
+
+                <div class="or-divider">OR</div>
+
+                <label for="weekly-upload">
+                    Upload a New Image
+                </label>
+
+                <input
+                    type="file"
+                    id="weekly-upload"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,image/*"
+                >
+
+                <p class="small">
+                    Maximum upload size: 10 MB.
+                    New uploads are saved in images/weekly/.
+                </p>
+
+            </div>
+
+            <div class="form-grid weekly-time-range">
+                <div>
+                    <label for="weekly-start-time">Earliest Posting Time</label>
+                    <input type="time" id="weekly-start-time" name="start_time" value="09:00" required>
+                </div>
+                <div>
+                    <label for="weekly-end-time">Latest Posting Time</label>
+                    <input type="time" id="weekly-end-time" name="end_time" value="14:59" required>
+                </div>
+            </div>
+            <p class="small">Garfie chooses a random posting time within this day's range (Eastern Time).</p>
+
+            <label for="weekly-message">
+                Optional Message
+            </label>
+
+            <textarea
+                id="weekly-message"
+                name="message"
+                placeholder="Message to accompany the image..."
+            ></textarea>
+
+            <button type="submit">
+                Save Weekly Configuration
+            </button>
+        </form>
+
+        <h3 style="margin-top: 28px;">
+            Current Weekly Configurations
+        </h3>
+
+        <div class="table-wrap">
+            <table class="weekly-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Image</th>
+                        <th>Message</th>
+                        <th>Posting Window</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${weekly_rows}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- SPECIFIC DATE OVERRIDES -->
+
+    <section class="panel">
+        <h2>Specific Date Overrides</h2>
+
+        <p class="section-description">
+            Configure an image for a particular calendar date.
+            This takes priority over weekly and recurring rules.
+        </p>
+
+        <form
+            method="post"
+            action="${special_save_url}"
+            enctype="multipart/form-data"
+        >
+
+            <div class="form-grid">
+
+                <div>
+                    <label for="special-month">
+                        Month
+                    </label>
+
+                    <select
+                        id="special-month"
+                        name="month"
+                        required
+                    >
+                        <option value="">Choose a month...</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="special-day">
+                        Day
+                    </label>
+
+                    <input
+                        type="number"
+                        id="special-day"
+                        name="day"
+                        min="1"
+                        max="31"
+                        required
+                        placeholder="1-31"
+                    >
+                </div>
+
+            </div>
+
+            <div class="image-choice">
+
+                <label for="special-existing">
+                    Choose an Existing Image
+                </label>
+
+                <select
+                    id="special-existing"
+                    name="existing_image"
+                >
+                    ${image_options}
+                </select>
+
+                <div class="or-divider">OR</div>
+
+                <label for="special-upload">
+                    Upload a New Image
+                </label>
+
+                <input
+                    type="file"
+                    id="special-upload"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,image/*"
+                >
+
+                <p class="small">
+                    New uploads are saved in images/special/.
+                </p>
+
+            </div>
+
+            <label for="special-message">
+                Optional Message
+            </label>
+
+            <textarea
+                id="special-message"
+                name="message"
+                placeholder="Message to accompany the image..."
+            ></textarea>
+
+            <button type="submit">
+                Save Date Override
+            </button>
+        </form>
+
+        <h3 style="margin-top: 28px;">
+            Current Date Overrides
+        </h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Image</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${special_rows}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- RECURRING MONTHLY RULES -->
+
+    <section class="panel">
+        <h2>Recurring Monthly Rules</h2>
+
+        <p class="section-description">
+            Configure an image to be used for a particular weekday
+            throughout a selected month. For example, every Friday
+            in October.
+        </p>
+
+        <form
+            method="post"
+            action="${recurring_save_url}"
+            enctype="multipart/form-data"
+        >
+
+            <div class="form-grid">
+
+                <div>
+                    <label for="recurring-month">
+                        Month
+                    </label>
+
+                    <select
+                        id="recurring-month"
+                        name="month"
+                        required
+                    >
+                        <option value="">Choose a month...</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="recurring-weekday">
+                        Weekday
+                    </label>
+
+                    <select
+                        id="recurring-weekday"
+                        name="weekday"
+                        required
+                    >
+                        <option value="">Choose a weekday...</option>
+                        <option value="0">Monday</option>
+                        <option value="1">Tuesday</option>
+                        <option value="2">Wednesday</option>
+                        <option value="3">Thursday</option>
+                        <option value="4">Friday</option>
+                        <option value="5">Saturday</option>
+                        <option value="6">Sunday</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="image-choice">
+
+                <label for="recurring-existing">
+                    Choose an Existing Image
+                </label>
+
+                <select
+                    id="recurring-existing"
+                    name="existing_image"
+                >
+                    ${image_options}
+                </select>
+
+                <div class="or-divider">OR</div>
+
+                <label for="recurring-upload">
+                    Upload a New Image
+                </label>
+
+                <input
+                    type="file"
+                    id="recurring-upload"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,image/*"
+                >
+
+                <p class="small">
+                    New uploads are saved in images/recurring/.
+                </p>
+
+            </div>
+
+            <label for="recurring-message">
+                Optional Message
+            </label>
+
+            <textarea
+                id="recurring-message"
+                name="message"
+                placeholder="Message to accompany the image..."
+            ></textarea>
+
+            <button type="submit">
+                Save Recurring Rule
+            </button>
+        </form>
+
+        <h3 style="margin-top: 28px;">
+            Current Recurring Rules
+        </h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Weekday</th>
+                        <th>Image</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${recurring_rows}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <footer>
+        Garfie Admin Dashboard
+    </footer>
+
+</div>
+</body>
+</html>
