@@ -1,0 +1,30 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+
+# Runtime data (contains messages, IDs and history)
+schedule.db
+schedule.db-*
+*.db.bak
+*.sqlite*
+*.log
+logs/
+
+# Python environments, caches, editor files
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.bak
+*.swp
+.vscode/
+.idea/
+.pytest_cache/
+.DS_Store
+
+# User-uploaded images; explicitly keep only repository starter images
+images/*
+!images/default.jpg
+!images/monday.jpg
+!images/friday.jpg
