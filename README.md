@@ -1,4 +1,9 @@
-# Garfie
+# Garfie Baby!
+Friday again, Garfie Baby!
+
+Modeled after the Facebook page "Friday again, Garfie Baby!", this self-hosted Discord bot gives you the Garfie Friday and Monday treatment in your own Discord.
+
+https://www.facebook.com/GarfieBaby
 
 Garfie is a self-hosted Discord bot that posts images on a configurable schedule. It includes a browser-based administration dashboard for managing weekly posting days, time windows, messages, and schedule overrides.
 
