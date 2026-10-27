@@ -1,4 +1,5 @@
-# Garfie
+# Garfie Baby!
+Friday again, Garfie Baby!
 
 Discord scheduled-image bot with a local administration dashboard.
 
